@@ -1,0 +1,54 @@
+{
+  "name": "oidc-authcode-pkce",
+  "version": "0.0.1",
+  "description": "OpenID Connect RP for Authorization Code Flow with PKCE",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "lint": "tsc --noEmit && eslint src/**/*.ts",
+    "format": "prettier --write src/**/*.{js,jsx,ts,tsx,json,css,scss,md} package.json tsconfig.json *.js",
+    "format-check": "prettier --check src/**/*.{js,jsx,ts,tsx,json,css,scss,md} package.json tsconfig.json *.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shartte/oidc-authcode-pkce.git"
+  },
+  "keywords": [
+    "oidc",
+    "pkce",
+    "oauth",
+    "typescript",
+    "javascript"
+  ],
+  "author": "Boris Fresow, Sebastian Hartte",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/shartte/oidc-authcode-pkce/issues"
+  },
+  "homepage": "https://github.com/shartte/oidc-authcode-pkce#readme",
+  "devDependencies": {
+    "@types/jest": "^25.1.4",
+    "@typescript-eslint/eslint-plugin": "^2.22.0",
+    "@typescript-eslint/parser": "^2.22.0",
+    "eslint": "^6.8.0",
+    "husky": "^4.2.3",
+    "jest": "^25.1.0",
+    "lint-staged": "^10.0.8",
+    "prettier": "^1.19.1",
+    "ts-jest": "^25.2.1",
+    "typescript": "^3.8.3"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
+      "prettier --write"
+    ]
+  }
+}
