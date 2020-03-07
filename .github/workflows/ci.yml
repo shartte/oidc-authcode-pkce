@@ -1,0 +1,59 @@
+name: CI
+on: push
+
+jobs:
+  # Check formatting of files with Prettier
+  format-check:
+    name: Formatting
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - run: npm ci
+      - run: npm run format-check
+
+  # Run ESLint on all files
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - run: npm ci
+      - run: npm run lint
+
+  # Run the typescript compiler to typecheck the files
+  typecheck:
+    name: Build Package
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - run: npm ci
+      - run: npm run build
+      - run: npm pack
+      - id: getfilename
+        run: echo "::set-output name=file::$(ls oidc-authcode-pkce-*.tgz)"
+      - uses: actions/upload-artifact@v1
+        with:
+          name: npm-package
+          path: ${{ steps.getfilename.outputs.file }}
+
+  # Run Jest Unit Tests
+  test:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+          registry-url: https://registry.npmjs.org/
+      - run: npm ci
+      - run: npm test

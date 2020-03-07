@@ -2,8 +2,7 @@
   "name": "oidc-authcode-pkce",
   "version": "0.0.1",
   "description": "OpenID Connect RP for Authorization Code Flow with PKCE",
-  "type": "module",
-  "main": "index.js",
+  "module": "dist/index.js",
   "scripts": {
     "test": "jest",
     "build": "tsc",
@@ -50,5 +49,8 @@
     "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
       "prettier --write"
     ]
-  }
+  },
+  "files": [
+    "dist"
+  ]
 }
