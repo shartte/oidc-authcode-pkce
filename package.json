@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "OpenID Connect RP for Authorization Code Flow with PKCE",
   "module": "dist/index.js",
+  "typings": "dist/index.d.ts",
   "scripts": {
     "test:chrome": "karma start --browsers ChromeHeadless --singleRun",
     "test:firefox": "karma start --browsers Firefox --singleRun",
