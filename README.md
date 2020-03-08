@@ -21,7 +21,7 @@ outlined in [OAuth 2.0 for Browser-Based Apps](https://tools.ietf.org/html/draft
   Requests id tokens (if desired) and allows querying the user profile from the userprofile endpoint. Will also
   validate the id token and access token as outlined in the spec.
 - **Silent Refresh**<br>
-  By silently  renewing the access token in a hidden iframe, tokens can still have a relatively short lifetime, while 
+  By silently renewing the access token in a hidden iframe, tokens can still have a relatively short lifetime, while
   avoiding re-authentication or storing sensitive refresh tokens. The user's session will instead be maintained
   by the authorization server using cookies or other means.
 - **Authenticated Requests**<br>
