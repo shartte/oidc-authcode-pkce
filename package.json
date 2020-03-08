@@ -8,8 +8,8 @@
     "build": "tsc",
     "watch": "tsc --watch",
     "lint": "tsc --noEmit && eslint src/**/*.ts",
-    "format": "prettier --write src/**/*.{js,jsx,ts,tsx,json,css,scss,md} package.json tsconfig.json *.js",
-    "format-check": "prettier --check src/**/*.{js,jsx,ts,tsx,json,css,scss,md} package.json tsconfig.json *.js"
+    "format": "prettier --write **/*.{ts,js,md,yml,json}",
+    "format-check": "prettier --check **/*.{ts,js,md,yml,json}"
   },
   "repository": {
     "type": "git",
@@ -46,7 +46,7 @@
     }
   },
   "lint-staged": {
-    "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
+    "**/*.{ts,js,md,yml,json}": [
       "prettier --write"
     ]
   },
