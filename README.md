@@ -10,7 +10,7 @@ It only supports the minimal feature set required to integrate with an IDP using
 code flow with PKCE (as a public client), and silent refresh. If your project requires a more fully
 featured OIDC client, see [similar projects](#similar-projects).
 
-This library aims to follow the best current practice JavaScript Applications with and without a backend
+This library aims to follow the best current practice for JavaScript Applications with and without a backend as
 outlined in [OAuth 2.0 for Browser-Based Apps](https://tools.ietf.org/html/draft-ietf-oauth-browser-based-apps-05).
 
 ## Features
@@ -47,7 +47,7 @@ The following standards and best practices are especially relevant for this libr
   _DRAFT_ of best current practice focusing on browser-based apps.
 - [RFC8414: OAuth 2.0 Authorization Server Metadata](https://www.rfc-editor.org/rfc/rfc8414.html)<br>
   Specifies IDP metadata that is retrievable through a well-known URL, making it possible to use an authorization server
-  by just providing it's base URL to this library.
+  by just providing its base URL to this library.
 
 ## Similar Projects
 
