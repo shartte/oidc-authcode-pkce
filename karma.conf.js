@@ -1,5 +1,7 @@
 // Karma configuration
 
+const path = require("path");
+
 module.exports = function(config) {
   config.set({
     // frameworks to use
@@ -7,7 +9,7 @@ module.exports = function(config) {
     frameworks: ["jasmine"],
 
     // list of files / patterns to load in the browser
-    files: ["src/**/*.test.ts"],
+    files: ["src/**/*.ts"],
 
     // list of files / patterns to exclude
     exclude: [],
@@ -25,6 +27,17 @@ module.exports = function(config) {
             test: /\.ts$/,
             use: "ts-loader",
             exclude: /node_modules/
+          },
+          // See https://tomasalabes.me/blog/typescript/tests/code-coverage/webpack/2018/09/24/ts-code-coverage.html
+          {
+            test: /\.ts$/,
+            enforce: "post", // needed if you're using Babel
+            include: path.resolve(`src/`), // instrument only sources with Istanbul
+            exclude: [/node_modules/, /\.test\.ts$/],
+            loader: "istanbul-instrumenter-loader",
+            options: {
+              esModules: true // needed if you're using Babel
+            }
           }
         ]
       },
@@ -36,13 +49,20 @@ module.exports = function(config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      "src/**/*.ts": ["webpack", "coverage"]
+      "src/**/*.ts": ["webpack"]
     },
 
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ["progress", "coverage"],
+    reporters: ["progress", "coverage-istanbul"],
+
+    coverageIstanbulReporter: {
+      // lcov is used by WebStorm to show coverage data
+      // json is used by codecov for reporting it on Gitlab
+      reports: ["lcov", "json"],
+      fixWebpackSourcePaths: true
+    },
 
     // web server port
     port: 9876,
