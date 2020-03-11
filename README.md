@@ -1,6 +1,7 @@
 # OpenID Connect Client (RP) for Modern Web Apps
 
 ![CI](https://github.com/shartte/oidc-authcode-pkce/workflows/CI/badge.svg)
+[![codecov](https://codecov.io/gh/shartte/oidc-authcode-pkce/branch/master/graph/badge.svg)](https://codecov.io/gh/shartte/oidc-authcode-pkce)
 
 ## Overview
 
