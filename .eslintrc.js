@@ -9,6 +9,7 @@ module.exports = {
   },
   rules: {
     // Place to specify ESLint rules. Can be used to overwrite rules specified from the extended configs
-    // e.g. "@typescript-eslint/explicit-function-return-type": "off",
+    // The relevant specifications use underscores alot and we want to maintain name-parity.
+    "@typescript-eslint/camelcase": "off"
   },
 };

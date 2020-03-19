@@ -37,8 +37,10 @@ The following standards and best practices are especially relevant for this libr
 
 - [RFC6749: The OAuth 2.0 Authorization Framework](https://tools.ietf.org/html/rfc6749)<br>
   The core OAuth specification.
-- [OpenID](http://openid.net/specs/openid-connect-core-1_0.html)<br>
+- [OpenID Connect Core](http://openid.net/specs/openid-connect-core-1_0.html)<br>
   Enhances RFC6749 with an identity layer (ID tokens/user profiles).
+- [OpenID Connect Discovery](https://openid.net/specs/openid-connect-discovery-1_0.html)<br>
+  Used to retrieve metadata about an IDP if only the issuer URL is known.
 - [RFC6750: The OAuth 2.0 Authorization Framework: Bearer Token Usage](https://tools.ietf.org/html/rfc6750)<br>
   Relevant for making authenticated requests using the access token obtained from the IDP, and
   the standardized error codes returned for invalid tokens.
@@ -49,6 +51,12 @@ The following standards and best practices are especially relevant for this libr
 - [RFC8414: OAuth 2.0 Authorization Server Metadata](https://www.rfc-editor.org/rfc/rfc8414.html)<br>
   Specifies IDP metadata that is retrievable through a well-known URL, making it possible to use an authorization server
   by just providing its base URL to this library.
+- [RFC7518: JSON Web Token (JWT)](https://tools.ietf.org/html/rfc7519)<br>
+  Relevant for parsing the id_token returned by the idp. While access tokens can be JWT as well, this is unspecified
+  and thus this library does not make attempts to parse the access token.
+- [RFC7515: JSON Web Signature (JWS)](https://tools.ietf.org/html/rfc7515)<br>
+  While this library does not validate the id_token signature (since it's not required by OIDC), it has to parse
+  JWT, whose encoding is specified in the JWS spec (JWS Compact Serialization).
 
 ## Similar Projects
 

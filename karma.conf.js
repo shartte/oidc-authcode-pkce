@@ -1,6 +1,14 @@
 // Karma configuration
 
+const express = require("express");
 const path = require("path");
+
+const router = express.Router();
+global["router"] = router;
+
+function mockIdpRouterFactory(config) {
+  return router;
+}
 
 module.exports = function (config) {
   config.set({
@@ -88,5 +96,12 @@ module.exports = function (config) {
     // Concurrency level
     // how many browser should be started simultaneous
     concurrency: 1,
+
+    // We use an express router to allow tests to provide their own routes
+    middleware: ["mockIdpRouter"],
+    plugins: [
+      "karma-*",
+      { "middleware:mockIdpRouter": ["factory", mockIdpRouterFactory] }
+    ]
   });
 };
