@@ -33,11 +33,16 @@
   },
   "homepage": "https://github.com/shartte/oidc-authcode-pkce#readme",
   "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.0",
     "@types/jasmine": "^3.5.8",
     "@typescript-eslint/eslint-plugin": "^2.22.0",
     "@typescript-eslint/parser": "^2.22.0",
+    "babel-loader": "^8.1.0",
     "eslint": "^6.8.0",
     "express": "^4.17.1",
+    "fastestsmallesttextencoderdecoder": "^1.0.14",
     "husky": "^4.2.3",
     "istanbul-instrumenter-loader": "^3.0.1",
     "jasmine-core": "^3.5.0",
@@ -68,5 +73,9 @@
   },
   "files": [
     "dist"
-  ]
+  ],
+  "dependencies": {
+    "@babel/polyfill": "^7.8.7",
+    "regenerator-runtime": "^0.13.5"
+  }
 }

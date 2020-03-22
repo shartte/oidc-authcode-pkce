@@ -11,13 +11,37 @@ function mockIdpRouterFactory(config) {
 }
 
 module.exports = function (config) {
+  const babelLoader = {
+    loader: "babel-loader",
+    options: {
+      presets: ["@babel/preset-env"],
+    },
+  };
+
+  const extraPolyfills = [];
+  if (config.browsers.includes("IE")) {
+    console.log("Adding polyfills for IE11");
+    extraPolyfills.push(
+      "node_modules/fastestsmallesttextencoderdecoder/EncoderDecoderTogether.min.js",
+      require("regenerator-runtime/path").path
+    );
+    babelLoader.options.presets = [
+      [
+        "@babel/preset-env",
+        {
+          targets: "IE 11",
+        },
+      ],
+    ];
+  }
+
   config.set({
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
     frameworks: ["jasmine"],
 
     // list of files / patterns to load in the browser
-    files: ["src/**/*.ts"],
+    files: [...extraPolyfills, "src/**/*.ts"],
 
     // list of files / patterns to exclude
     exclude: [],
@@ -33,7 +57,12 @@ module.exports = function (config) {
         rules: [
           {
             test: /\.ts$/,
-            use: "ts-loader",
+            use: [
+              babelLoader,
+              {
+                loader: "ts-loader",
+              },
+            ],
             exclude: /node_modules/,
           },
           // See https://tomasalabes.me/blog/typescript/tests/code-coverage/webpack/2018/09/24/ts-code-coverage.html
