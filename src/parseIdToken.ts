@@ -36,6 +36,6 @@ export default function parseIdToken(encodedToken: string): IDToken {
     encodedToken,
     header,
     signature,
-    signatureHashAlg
+    signatureHashAlg,
   };
 }

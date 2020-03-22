@@ -38,6 +38,6 @@ export default async function fetchIdpMetadata(
     issuer,
     authorizationEndpoint,
     tokenEndpoint,
-    userinfoEndpoint
+    userinfoEndpoint,
   };
 }

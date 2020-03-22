@@ -81,7 +81,7 @@ export class OIDCClient {
       const { metadataUrl, ...configOverrides } = this.config;
       this.config = {
         ...(await fetchIdpMetadata(metadataUrl)),
-        ...configOverrides
+        ...configOverrides,
       };
       return this.config;
     }
@@ -89,10 +89,10 @@ export class OIDCClient {
 
   requestAuthentication({
     applicationState,
-    replaceLocation
+    replaceLocation,
   }: RequestAuthenticationOptions): void {
-    this.resolveConfig().then(config => {
-      requestAuthentication(config, applicationState).then(url => {
+    this.resolveConfig().then((config) => {
+      requestAuthentication(config, applicationState).then((url) => {
         if (replaceLocation) {
           location.replace(url);
         } else {

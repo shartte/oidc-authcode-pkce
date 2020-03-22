@@ -1,6 +1,6 @@
 import {
   createAuthenticationState,
-  storeAuthenticationState
+  storeAuthenticationState,
 } from "./authenticationState";
 import { ResolvedClientConfig } from "./OIDCClient";
 
@@ -35,7 +35,7 @@ export default async function requestAuthentication(
     response_mode: "fragment",
     // PKCE parameters as per RFC7636 § 4.3
     code_challenge: pkceState.codeChallenge,
-    code_challenge_method: pkceState.codeChallengeMethod
+    code_challenge_method: pkceState.codeChallengeMethod,
   });
 
   return `${authorizationEndpoint}?${params}`;

@@ -1,7 +1,7 @@
 import {
   AuthenticationState,
   getAuthenticationState,
-  removeAuthenticationState
+  removeAuthenticationState,
 } from "./authenticationState";
 import { ResolvedClientConfig } from "./OIDCClient";
 import parseIdToken from "./parseIdToken";
@@ -22,8 +22,8 @@ async function handleCodeResponse(
       code,
       client_id: clientId,
       redirect_uri: redirectUrl,
-      code_verifier: authState.pkceState.codeVerifier
-    })
+      code_verifier: authState.pkceState.codeVerifier,
+    }),
   });
 
   if (!tokenResponse.ok) {
@@ -34,7 +34,7 @@ async function handleCodeResponse(
 
   const {
     id_token: encodedIdToken,
-    access_token: accessToken
+    access_token: accessToken,
   } = await tokenResponse.json();
 
   const idToken = parseIdToken(encodedIdToken);
@@ -44,7 +44,7 @@ async function handleCodeResponse(
   return {
     idToken,
     accessToken,
-    applicationState: authState.applicationState
+    applicationState: authState.applicationState,
   };
 }
 

@@ -101,7 +101,7 @@ module.exports = function (config) {
     middleware: ["mockIdpRouter"],
     plugins: [
       "karma-*",
-      { "middleware:mockIdpRouter": ["factory", mockIdpRouterFactory] }
-    ]
+      { "middleware:mockIdpRouter": ["factory", mockIdpRouterFactory] },
+    ],
   });
 };

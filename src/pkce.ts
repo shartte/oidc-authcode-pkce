@@ -17,7 +17,7 @@ export async function createPkceValues(): Promise<PkceValues> {
   // Convert back to uint8array for hashing with SHA256
   // note that url-safe base64 encoding already conforms to ASCII, so this will work
   const rawCodeVerifier = new Uint8Array(
-    [...codeVerifier].map(s => s.charCodeAt(0))
+    [...codeVerifier].map((s) => s.charCodeAt(0))
   );
   const digest = await crypto.subtle.digest("SHA-256", rawCodeVerifier);
 
@@ -26,6 +26,6 @@ export async function createPkceValues(): Promise<PkceValues> {
   return {
     codeVerifier,
     codeChallenge,
-    codeChallengeMethod: "S256"
+    codeChallengeMethod: "S256",
   };
 }

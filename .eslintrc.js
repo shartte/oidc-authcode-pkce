@@ -10,6 +10,6 @@ module.exports = {
   rules: {
     // Place to specify ESLint rules. Can be used to overwrite rules specified from the extended configs
     // The relevant specifications use underscores alot and we want to maintain name-parity.
-    "@typescript-eslint/camelcase": "off"
+    "@typescript-eslint/camelcase": "off",
   },
 };

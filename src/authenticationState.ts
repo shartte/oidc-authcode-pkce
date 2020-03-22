@@ -37,7 +37,7 @@ export async function createAuthenticationState(
     state,
     created,
     pkceState: await createPkceValues(),
-    applicationState
+    applicationState,
   };
 }
 
@@ -60,9 +60,9 @@ export function getAuthenticationState(
     pkceState: {
       codeChallenge: state.pkceState.codeChallenge,
       codeVerifier: state.pkceState.codeVerifier,
-      codeChallengeMethod: state.pkceState.codeChallengeMethod
+      codeChallengeMethod: state.pkceState.codeChallengeMethod,
     },
-    applicationState: state.applicationState
+    applicationState: state.applicationState,
   };
 }
 
