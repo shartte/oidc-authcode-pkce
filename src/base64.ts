@@ -29,5 +29,5 @@ export function base64UrlDecode(encoded: string): Uint8Array {
   encoded = encoded.replace(/-/g, "+").replace(/_/g, "/");
 
   const binaryString = atob(encoded);
-  return Uint8Array.from([...binaryString].map(x => x.charCodeAt(0)));
+  return Uint8Array.from([...binaryString].map((x) => x.charCodeAt(0)));
 }

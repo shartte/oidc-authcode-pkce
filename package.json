@@ -48,7 +48,7 @@
     "karma-safari-launcher": "git://github.com/RLovelett/karma-safari-launcher.git#safari-webdriver",
     "karma-webpack": "^4.0.2",
     "lint-staged": "^10.0.8",
-    "prettier": "^1.19.1",
+    "prettier": "^2.0.1",
     "ts-loader": "^6.2.1",
     "typescript": "^3.8.3",
     "webpack": "^4.42.0"

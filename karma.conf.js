@@ -2,7 +2,7 @@
 
 const path = require("path");
 
-module.exports = function(config) {
+module.exports = function (config) {
   config.set({
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
@@ -26,7 +26,7 @@ module.exports = function(config) {
           {
             test: /\.ts$/,
             use: "ts-loader",
-            exclude: /node_modules/
+            exclude: /node_modules/,
           },
           // See https://tomasalabes.me/blog/typescript/tests/code-coverage/webpack/2018/09/24/ts-code-coverage.html
           {
@@ -36,20 +36,20 @@ module.exports = function(config) {
             exclude: [/node_modules/, /\.test\.ts$/],
             loader: "istanbul-instrumenter-loader",
             options: {
-              esModules: true // needed if you're using Babel
-            }
-          }
-        ]
+              esModules: true, // needed if you're using Babel
+            },
+          },
+        ],
       },
       resolve: {
-        extensions: [".ts", ".js"]
-      }
+        extensions: [".ts", ".js"],
+      },
     },
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      "src/**/*.ts": ["webpack"]
+      "src/**/*.ts": ["webpack"],
     },
 
     // test results reporter to use
@@ -61,7 +61,7 @@ module.exports = function(config) {
       // lcov is used by WebStorm to show coverage data
       // json is used by codecov for reporting it on Gitlab
       reports: ["lcov", "json"],
-      fixWebpackSourcePaths: true
+      fixWebpackSourcePaths: true,
     },
 
     // web server port
@@ -87,6 +87,6 @@ module.exports = function(config) {
 
     // Concurrency level
     // how many browser should be started simultaneous
-    concurrency: 1
+    concurrency: 1,
   });
 };

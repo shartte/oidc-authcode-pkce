@@ -1,6 +1,6 @@
 import { base64UrlDecode, base64UrlEncode } from "./base64";
 
-describe("URL-safe base64 encoding", function() {
+describe("URL-safe base64 encoding", function () {
   // Generate a test array pattern containing the full range of 0-255
   const input = new Uint8Array(256);
   for (let i = 0; i < 256; i++) {
