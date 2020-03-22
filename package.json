@@ -10,7 +10,7 @@
     "test:ie": "karma start --browsers IE --singleRun",
     "build": "tsc",
     "watch": "tsc --watch",
-    "lint": "tsc --noEmit && eslint src/**/*.ts",
+    "lint": "tsc --noEmit && eslint --max-warnings 0 src/**/*.ts",
     "format": "prettier --write **/*.{ts,js,md,yml,json}",
     "format-check": "prettier --check **/*.{ts,js,md,yml,json}"
   },
