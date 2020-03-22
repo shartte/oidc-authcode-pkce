@@ -3,7 +3,12 @@ import oidcClient from "./oidcClient";
 
 function AuthLogin() {
   useEffect(() => {
-    oidcClient.requestAuthentication(true);
+    oidcClient.requestAuthentication({
+      applicationState: {
+        location: window.location.href
+      },
+      replaceLocation: true
+    });
   }, []);
 
   return <div>Redirecting to SSO...</div>;

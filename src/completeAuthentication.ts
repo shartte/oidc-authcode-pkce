@@ -13,7 +13,7 @@ async function handleCodeResponse(
   code: string,
   sessionState: string | undefined,
   authState: AuthenticationState
-): Promise<{ idToken: IDToken; accessToken: string }> {
+): Promise<AuthenticationResult> {
   const { clientId, redirectUrl, tokenEndpoint } = config;
   const tokenResponse = await fetch(tokenEndpoint, {
     method: "POST",
@@ -39,18 +39,33 @@ async function handleCodeResponse(
 
   const idToken = parseIdToken(encodedIdToken);
 
-  await validateIdToken(config, authState.nonce, idToken, accessToken);
+  await validateIdToken(config, idToken, accessToken);
 
   return {
     idToken,
-    accessToken
+    accessToken,
+    applicationState: authState.applicationState
   };
 }
 
+export type AuthenticationResult = {
+  idToken: IDToken;
+  accessToken?: string;
+  applicationState: unknown;
+};
+
 export default async function completeAuthentication(
   config: ResolvedClientConfig
-): Promise<{ idToken: IDToken; accessToken: string }> {
+): Promise<AuthenticationResult> {
   const params = new URLSearchParams(location.hash.substring(1));
+
+  // Strip out the parameters supplied from the IDP from the browser history
+  // This avoids issues when reloading the current page using F5 that arise
+  // from the state parameter no longer being valid.
+  const lastHash = location.href.lastIndexOf("#");
+  if (lastHash !== -1) {
+    history.replaceState(null, "", location.href.substr(0, lastHash));
+  }
 
   // The state parameter is required for both error and success responses
   const state = params.get("state");

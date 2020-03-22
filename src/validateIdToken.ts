@@ -9,11 +9,29 @@ async function validateAccessToken(
 }
 
 /**
+ * Validates an 'aud' (Audience) claim, which according to the spec can either be a single string scalar
+ * or an array of strings. It can also be an array of just a single string, and still be compliant.
+ *
+ * @param claimedAudience The aud claim found in the ID token.
+ * @param clientId The client id of this client.
+ */
+function validateAudience(
+  claimedAudience: string | string[],
+  clientId: string
+): boolean {
+  if (Array.isArray(claimedAudience)) {
+    // The spec also requires us to reject ID tokens that contain an untrusted value.
+    return claimedAudience.length === 1 && claimedAudience[0] === clientId;
+  } else {
+    return claimedAudience === clientId;
+  }
+}
+
+/**
  * Validates an ID Token as per OIDC Core 3.1.3.6. and 3.1.3.7.
  */
 async function validateIdToken(
   config: OIDCClientOptions,
-  nonce: string,
   { claims }: IDToken,
   accessToken?: string
 ): Promise<void> {
@@ -40,7 +58,7 @@ async function validateIdToken(
   //  identified by the iss (issuer) Claim as an audience. The aud (audience) Claim MAY contain an array with more
   //  than one element. The ID Token MUST be rejected if the ID Token does not list the Client as a valid audience,
   //  or if it contains additional audiences not trusted by the Client.
-  if (claims.aud.length !== 1 || claims.aud[0] !== config.clientId) {
+  if (!validateAudience(claims.aud, config.clientId)) {
     throw new Error(
       `aud claim '${claims.aud}' contains untrusted audience other than client id ${config.clientId}`
     );
@@ -82,16 +100,11 @@ async function validateIdToken(
 
   // #10 The iat Claim can be used to reject tokens that were issued too far away from the current time, limiting
   // the amount of time that nonces need to be stored to prevent attacks. The acceptable range is Client specific.
-  // TODO: Do we want to prevent replay attacks, is PKCE+one-time-state not sufficient?
-  if (nonce !== claims.nonce) {
-    throw new Error(
-      `ID token nonce '${claims.nonce}' does not match '${nonce}`
-    );
-  }
-
   // #11 If a nonce value was sent in the Authentication Request, a nonce Claim MUST be present and its value
   // checked to verify that it is the same value as the one that was sent in the Authentication Request. The Client
   // SHOULD check the nonce value for replay attacks. The precise method for detecting replay attacks is Client specific.
+  // NOTE: This library does not use nonces, because our state parameter is already one-time-use only,
+  //       and has the same entropy as the nonce would have.
 
   // #12 If the acr Claim was requested, the Client SHOULD check that the asserted Claim Value is appropriate. The
   // meaning and processing of acr Claim Values is out of scope for this specification.

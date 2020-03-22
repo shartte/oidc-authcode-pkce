@@ -52,6 +52,21 @@ function isFullClientConfig(
   return (config as UnresolvedClientConfig).metadataUrl === undefined;
 }
 
+type RequestAuthenticationOptions = {
+  /**
+   * Application specific state that will be saved alongside the authentication state, and returned as
+   * part of {@link AuthenticationResult}.
+   */
+  applicationState: unknown;
+
+  /**
+   * Replace the current history location with the authorization server URL.
+   * This can be helpful if you use a specific route to automatically call {@link OIDCClient#requestAuthentication},
+   * and want the user's back button to continue functioning.
+   */
+  replaceLocation?: boolean;
+};
+
 export class OIDCClient {
   private config: UnresolvedClientConfig | ResolvedClientConfig;
 
@@ -72,9 +87,12 @@ export class OIDCClient {
     }
   }
 
-  requestAuthentication(replaceLocation?: boolean): void {
+  requestAuthentication({
+    applicationState,
+    replaceLocation
+  }: RequestAuthenticationOptions): void {
     this.resolveConfig().then(config => {
-      requestAuthentication(config).then(url => {
+      requestAuthentication(config, applicationState).then(url => {
         if (replaceLocation) {
           location.replace(url);
         } else {
