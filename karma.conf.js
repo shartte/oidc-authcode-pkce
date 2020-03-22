@@ -14,7 +14,18 @@ module.exports = function (config) {
   const babelLoader = {
     loader: "babel-loader",
     options: {
-      presets: ["@babel/preset-env"],
+      presets: [
+        [
+          "@babel/preset-env",
+          {
+            targets: [
+              "last 2 Safari versions",
+              "last 2 Chrome versions",
+              "Firefox ESR",
+            ],
+          },
+        ],
+      ],
     },
   };
 
