@@ -32,6 +32,14 @@ export type ClientConfig = {
    * by allowing a mismatch of up to the given number of seconds.
    */
   clockSkew?: number;
+
+  /**
+   * Do not use the response_mode=fragment to retrieve the authorization code from the IDP.
+   * Some IDPs silently ignore response_mode and fall back to the default (which is query).
+   * By default, the fragment will be used since the browser will not send the code back to the web server
+   * in this case.
+   */
+  disableFragmentResponseMode?: boolean;
 };
 
 export type ResolvedClientConfig = ClientConfig & IDPMetadata;

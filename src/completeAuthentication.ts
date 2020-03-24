@@ -54,18 +54,29 @@ export type AuthenticationResult = {
   applicationState: unknown;
 };
 
-export default async function completeAuthentication(
-  config: ResolvedClientConfig
-): Promise<AuthenticationResult> {
-  const params = new URLSearchParams(location.hash.substring(1));
+/**
+ * Get and remove the IDP's parameters from the query string or fragment (depending on client configuration).
+ */
+function takeParameters(queryString: boolean | undefined): URLSearchParams {
+  const paramsString = queryString ? location.search : location.hash;
+
+  const params = new URLSearchParams(paramsString.substring(1));
 
   // Strip out the parameters supplied from the IDP from the browser history
   // This avoids issues when reloading the current page using F5 that arise
   // from the state parameter no longer being valid.
-  const lastHash = location.href.lastIndexOf("#");
-  if (lastHash !== -1) {
-    history.replaceState(null, "", location.href.substr(0, lastHash));
+  const startOfParams = location.href.lastIndexOf(paramsString);
+  if (startOfParams !== -1) {
+    history.replaceState(null, "", location.href.substr(0, startOfParams));
   }
+
+  return params;
+}
+
+export default async function completeAuthentication(
+  config: ResolvedClientConfig
+): Promise<AuthenticationResult> {
+  const params = takeParameters(config.disableFragmentResponseMode);
 
   // The state parameter is required for both error and success responses
   const state = params.get("state");
