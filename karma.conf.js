@@ -1,13 +1,10 @@
 // Karma configuration
 
-const express = require("express");
 const path = require("path");
+const mockRouter = require("./metadata.mock");
 
-const router = express.Router();
-global["router"] = router;
-
-function mockIdpRouterFactory(config) {
-  return router;
+function mockIdpRouterFactory() {
+  return mockRouter;
 }
 
 module.exports = function (config) {
@@ -34,7 +31,10 @@ module.exports = function (config) {
     console.log("Adding polyfills for IE11");
     extraPolyfills.push(
       "node_modules/fastestsmallesttextencoderdecoder/EncoderDecoderTogether.min.js",
-      require("regenerator-runtime/path").path
+      "node_modules/promise-polyfill/dist/polyfill.js",
+      require("regenerator-runtime/path").path,
+      "node_modules/url-search-params-polyfill/index.js",
+      "node_modules/whatwg-fetch/dist/fetch.umd.js"
     );
     babelLoader.options.presets = [
       [

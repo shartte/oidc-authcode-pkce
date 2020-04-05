@@ -41,14 +41,18 @@ export async function createAuthenticationState(
   };
 }
 
+function getStorageKey(stateId: string): string {
+  return "auth_state_" + stateId;
+}
+
 export function storeAuthenticationState(state: AuthenticationState): void {
-  localStorage["auth_state_" + state.state] = JSON.stringify(state);
+  localStorage[getStorageKey(state.state)] = JSON.stringify(state);
 }
 
 export function getAuthenticationState(
   id: string
 ): AuthenticationState | undefined {
-  const serializedState = localStorage["auth_state_" + id];
+  const serializedState = localStorage[getStorageKey(id)];
   if (!serializedState) {
     return undefined;
   }
@@ -67,5 +71,5 @@ export function getAuthenticationState(
 }
 
 export function removeAuthenticationState(id: string): void {
-  localStorage.removeItem("auth_state_" + id);
+  localStorage.removeItem(getStorageKey(id));
 }

@@ -1,6 +1,7 @@
 import fetchIdpMetadata from "./fetchIdpMetadata";
 import requestAuthentication from "./requestAuthentication";
 import completeAuthentication from "./completeAuthentication";
+import takeParameters from "./takeParameters";
 
 /**
  * Contains Metadata about an OpenID provider as specified in
@@ -78,8 +79,18 @@ type RequestAuthenticationOptions = {
 export class OIDCClient {
   private config: UnresolvedClientConfig | ResolvedClientConfig;
 
-  constructor(config: UnresolvedClientConfig | ResolvedClientConfig) {
+  private readonly location: Location;
+
+  private readonly history: History;
+
+  constructor(
+    config: UnresolvedClientConfig | ResolvedClientConfig,
+    location?: Location,
+    history?: History
+  ) {
     this.config = config;
+    this.location = location ?? window.location;
+    this.history = history ?? window.history;
   }
 
   private async resolveConfig(): Promise<ResolvedClientConfig> {
@@ -95,22 +106,30 @@ export class OIDCClient {
     }
   }
 
-  requestAuthentication({
+  async requestAuthentication({
     applicationState,
     replaceLocation,
-  }: RequestAuthenticationOptions): void {
-    this.resolveConfig().then((config) => {
-      requestAuthentication(config, applicationState).then((url) => {
-        if (replaceLocation) {
-          location.replace(url);
-        } else {
-          location.href = url;
-        }
-      });
-    });
+  }: RequestAuthenticationOptions): Promise<void> {
+    const url = await requestAuthentication(
+      await this.resolveConfig(),
+      applicationState
+    );
+    if (replaceLocation) {
+      this.location.replace(url);
+    } else {
+      this.location.href = url;
+    }
   }
 
   async completeAuthentication(): ReturnType<typeof completeAuthentication> {
-    return completeAuthentication(await this.resolveConfig());
+    const config = await this.resolveConfig();
+
+    const params = takeParameters(
+      this.location,
+      this.history,
+      config.disableFragmentResponseMode
+    );
+
+    return completeAuthentication(params, config);
   }
 }

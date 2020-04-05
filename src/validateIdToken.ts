@@ -1,38 +1,5 @@
 import { OIDCClientOptions } from "./OIDCClient";
-import { IDToken } from "./IDToken";
-import { base64UrlDecode, base64UrlEncode } from "./base64";
-
-/**
- * Validates that the given access token is associated with the id token by validating the access token hash
- * present in the id token.
- */
-async function validateAccessToken(
-  signatureHashAlg: string,
-  hashClaim: string,
-  accessToken: string
-): Promise<void> {
-  // According to spec, the hash value is of the access tokens "ASCII representation"
-  // Since the access token is opaque, this is ... weird? This will simply crash if the
-  // access token contains non-ASCII characters.
-  const accessTokenAscii = new Uint8Array(
-    accessToken.split("").map((x) => x.charCodeAt(0))
-  );
-  const accessTokenHash = new Uint8Array(
-    await crypto.subtle.digest(signatureHashAlg, accessTokenAscii)
-  );
-  const upperHalfHash = base64UrlEncode(
-    accessTokenHash.slice(0, accessTokenHash.length / 2),
-    false
-  );
-
-  // Normalizes hashClaim to NOT have padding
-  hashClaim = base64UrlEncode(base64UrlDecode(hashClaim), false);
-  if (upperHalfHash !== hashClaim) {
-    throw new Error(
-      `at_hash '${hashClaim}' does not match actual value '${upperHalfHash}'`
-    );
-  }
-}
+import { IDTokenClaims } from "./IDToken";
 
 /**
  * Validates an 'aud' (Audience) claim, which according to the spec can either be a single string scalar
@@ -58,14 +25,9 @@ function validateAudience(
  */
 async function validateIdToken(
   config: OIDCClientOptions,
-  { claims, signatureHashAlg }: IDToken,
-  accessToken?: string
+  claims: IDTokenClaims
 ): Promise<void> {
-  // Check from OIDC Core § 3.1.3.6. validate access token via at_hash, if present
-  const at_hash = claims.at_hash;
-  if (at_hash !== undefined && accessToken) {
-    await validateAccessToken(signatureHashAlg, at_hash, accessToken);
-  }
+  // at_hash according to OIDC Core § 3.1.3.6. MAY be validated, but it's not necessary
 
   // Checks from OIDC Core § 3.1.3.7. follow
 

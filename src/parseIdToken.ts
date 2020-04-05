@@ -8,7 +8,13 @@ export default function parseIdToken(encodedToken: string): IDToken {
 
   // The header is encoded in the same way for both JWE and JWS,
   // which allows us to idenify if a JWT is signed and not encrypted
-  const header = JSON.parse(utf8Decoder.decode(base64UrlDecode(encodedHeader)));
+  let header: any;
+  try {
+    header = JSON.parse(utf8Decoder.decode(base64UrlDecode(encodedHeader)));
+  } catch (e) {
+    throw new Error("Failed to parse ID Token header: " + e);
+  }
+
   const alg = header.alg;
   if (typeof header.alg !== "string") {
     throw new Error("'alg' in id_token header is missing.");
@@ -21,21 +27,21 @@ export default function parseIdToken(encodedToken: string): IDToken {
     throw new Error(`Unknown signature algorithm used in id_token: ${alg}`);
   }
 
-  const signatureHashAlg = "SHA-" + match[2];
-
   // Since we checked that it's not an encrypted JWT (as per JWE), we can now be sure
   // it should consist of three parts, and extract the remaining two
   const [encodedPayload, signature] = jwtParts;
 
-  const claims = JSON.parse(
-    utf8Decoder.decode(base64UrlDecode(encodedPayload))
-  );
+  let claims: any;
+  try {
+    claims = JSON.parse(utf8Decoder.decode(base64UrlDecode(encodedPayload)));
+  } catch (e) {
+    throw new Error("Failed to parse ID Token payload: " + e);
+  }
 
   return {
     claims,
     encodedToken,
     header,
     signature,
-    signatureHashAlg,
   };
 }

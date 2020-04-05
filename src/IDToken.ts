@@ -113,12 +113,4 @@ export type IDToken = {
    * The Base64 URL-Encoded signature of the ID token.
    */
   signature: string;
-
-  /**
-   * The hash algorithm used to compute the signature. Uses WebCrypto digest algorithm identifiers,
-   * such as SHA-256, SHA-384, or SHA-512.
-   *
-   * @see https://www.w3.org/TR/WebCryptoAPI/#algorithm-overview
-   */
-  signatureHashAlg: string;
 };
